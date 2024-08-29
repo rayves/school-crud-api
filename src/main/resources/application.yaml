@@ -1,0 +1,13 @@
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: cruddemo
+  datasource:
+    url: jdbc:mysql://localhost:3306/student_tracker
+    username: springstudent
+    password: springstudent
+
+logging:
+  level:
+    root: warn
