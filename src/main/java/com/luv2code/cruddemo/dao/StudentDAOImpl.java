@@ -25,6 +25,11 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
+    public Student findById(int id) {
+        return entityManager.find(Student.class, id);
+    }
+
+    @Override
     @Transactional
     // Transactional annotation required as the method is performing an update
     // transaction with the database

@@ -24,16 +24,24 @@ public class CruddemoApplication {
 		 * Often used to perform tasks like initialization, setting up default data
 		 */
 		return runner -> {
-			createStudent(studentDAO);
+			Student newStudent = createStudent(studentDAO);
+			Student myStudent = readStudent(studentDAO, newStudent.getId());
+			System.out.println("Found the student " + myStudent);
 		};
 	}
 
-	private void createStudent(StudentDAO studentDAO) {
+	private Student createStudent(StudentDAO studentDAO) {
 		System.out.println("Creating new student object...");
 		Student tempStudent = new Student("Paul", "Doe", "paul@luv2code.com");
 		System.out.println("Saving new student...");
 		studentDAO.save(tempStudent);
 		System.out.println("Saved student. Generated Id: " + tempStudent.getId());
+		return tempStudent;
+	}
+
+	private Student readStudent(StudentDAO studentDAO, int id) {
+		System.out.println("Retrieving student by id...");
+		return studentDAO.findById(id);
 	}
 
 }
