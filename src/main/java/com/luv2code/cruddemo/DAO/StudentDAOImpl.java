@@ -1,11 +1,14 @@
 package com.luv2code.cruddemo.DAO;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.luv2code.cruddemo.entity.Student;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 @Repository
@@ -29,10 +32,19 @@ public class StudentDAOImpl implements StudentDAO {
         return entityManager.find(Student.class, id);
     }
 
-    // @Override
-    // public Student findByEmail(String email) {
-    // return entityManager.find(Student.class, email);
-    // }
+    @Override
+    public List<Student> findAll() {
+        TypedQuery<Student> query = entityManager.createQuery("FROM Student", Student.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public Student findByEmail(String email) {
+        TypedQuery<Student> query = entityManager
+                .createQuery("FROM Student WHERE email=:$1", Student.class)
+                .setParameter("$1", email);
+        return query.getSingleResult();
+    }
 
     @Override
     @Transactional

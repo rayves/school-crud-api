@@ -39,8 +39,9 @@ public class CruddemoApplication {
 					.block();
 
 			createStudents(studentDAO, response);
-			Student myStudent = readStudentId(studentDAO, 10);
+			Student myStudent = queryByStudentEmail(studentDAO, "rey.padberg@karina.biz");
 			System.out.println("Found the student " + myStudent);
+			queryForStudents(studentDAO);
 		};
 	}
 
@@ -49,20 +50,28 @@ public class CruddemoApplication {
 			System.out.println("Creating new student object...");
 			String firstName = student.getFullName().split(" ")[0];
 			String lastName = student.getFullName().split(" ")[1];
-			Student tempStudent = new Student(firstName, lastName, student.getEmail());
+			Student tempStudent = new Student(firstName, lastName, student.getEmail().toLowerCase());
 			System.out.println("Saving new student...");
 			studentDAO.save(tempStudent);
 			System.out.println("Saved student. Generated Id: " + tempStudent.getId());
 		}
 	}
 
-	private Student readStudentId(StudentDAO studentDAO, int id) {
+	private Student queryByStudentId(StudentDAO studentDAO, int id) {
 		System.out.println("Retrieving student by id..." + id);
 		return studentDAO.findById(id);
 	}
 
-	// private Student readStudentEmail(StudentDAO studentDAO, String email) {
-	// System.out.println("Retrieving student by Email...");
-	// return studentDAO.findByEmail(email);
-	// }
+	private Student queryByStudentEmail(StudentDAO studentDAO, String email) {
+		System.out.println("Retrieving student by Email...");
+		return studentDAO.findByEmail(email);
+	}
+
+	private void queryForStudents(StudentDAO studentDAO) {
+		System.out.println("Retrieving all students...");
+		List<Student> students = studentDAO.findAll();
+		for (Student student : students) {
+			System.out.println(student);
+		}
+	}
 }
