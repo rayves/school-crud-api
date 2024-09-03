@@ -42,19 +42,28 @@ public class CruddemoApplication {
 			Student myStudent = queryByStudentEmail(studentDAO, "rey.padberg@karina.biz");
 			System.out.println("Found the student " + myStudent);
 			queryForStudents(studentDAO);
+
+			updateStudent(studentDAO, myStudent);
+			System.out.println("Updated Student... " + myStudent);
 		};
 	}
 
 	private void createStudents(StudentDAO studentDAO, List<StudentDTO> students) {
 		for (StudentDTO student : students) {
 			System.out.println("Creating new student object...");
-			String firstName = student.getFullName().split(" ")[0];
-			String lastName = student.getFullName().split(" ")[1];
+			String firstName = student.getFullName().split(" ")[0].toLowerCase();
+			String lastName = student.getFullName().split(" ")[1].toLowerCase();
 			Student tempStudent = new Student(firstName, lastName, student.getEmail().toLowerCase());
 			System.out.println("Saving new student...");
 			studentDAO.save(tempStudent);
 			System.out.println("Saved student. Generated Id: " + tempStudent.getId());
 		}
+	}
+
+	private void updateStudent(StudentDAO studentDAO, Student myStudent) {
+		System.out.println("Updating student..." + myStudent);
+		myStudent.setLastName("TEST");
+		studentDAO.update(myStudent);
 	}
 
 	private Student queryByStudentId(StudentDAO studentDAO, int id) {
@@ -63,7 +72,7 @@ public class CruddemoApplication {
 	}
 
 	private Student queryByStudentEmail(StudentDAO studentDAO, String email) {
-		System.out.println("Retrieving student by Email...");
+		System.out.println("Retrieving student by Email..." + email);
 		return studentDAO.findByEmail(email);
 	}
 

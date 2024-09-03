@@ -13,5 +13,7 @@ public interface StudentDAO {
 
     List<Student> findAll();
 
-    void save(Student theStudent);
+    void save(Student student);
+
+    void update(Student student);
 }

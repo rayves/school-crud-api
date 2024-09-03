@@ -62,4 +62,10 @@ public class StudentDAOImpl implements StudentDAO {
         entityManager.persist(theStudent);
     }
 
+    @Override
+    @Transactional
+    public void update(Student student) {
+        entityManager.merge(student);
+    }
+
 }
