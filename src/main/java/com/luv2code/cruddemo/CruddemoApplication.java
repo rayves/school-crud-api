@@ -1,11 +1,16 @@
 package com.luv2code.cruddemo;
 
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import com.luv2code.cruddemo.dao.StudentDAO;
+import com.luv2code.cruddemo.DAO.StudentDAO;
+import com.luv2code.cruddemo.DTO.StudentDTO;
 import com.luv2code.cruddemo.entity.Student;
 
 @SpringBootApplication
@@ -24,24 +29,40 @@ public class CruddemoApplication {
 		 * Often used to perform tasks like initialization, setting up default data
 		 */
 		return runner -> {
-			Student newStudent = createStudent(studentDAO);
-			Student myStudent = readStudent(studentDAO, newStudent.getId());
+			WebClient client = WebClient.create("https://jsonplaceholder.typicode.com");
+
+			List<StudentDTO> response = client.get()
+					.uri("/users")
+					.retrieve()
+					.bodyToMono(new ParameterizedTypeReference<List<StudentDTO>>() {
+					})
+					.block();
+
+			createStudents(studentDAO, response);
+			Student myStudent = readStudentId(studentDAO, 10);
 			System.out.println("Found the student " + myStudent);
 		};
 	}
 
-	private Student createStudent(StudentDAO studentDAO) {
-		System.out.println("Creating new student object...");
-		Student tempStudent = new Student("Paul", "Doe", "paul@luv2code.com");
-		System.out.println("Saving new student...");
-		studentDAO.save(tempStudent);
-		System.out.println("Saved student. Generated Id: " + tempStudent.getId());
-		return tempStudent;
+	private void createStudents(StudentDAO studentDAO, List<StudentDTO> students) {
+		for (StudentDTO student : students) {
+			System.out.println("Creating new student object...");
+			String firstName = student.getFullName().split(" ")[0];
+			String lastName = student.getFullName().split(" ")[1];
+			Student tempStudent = new Student(firstName, lastName, student.getEmail());
+			System.out.println("Saving new student...");
+			studentDAO.save(tempStudent);
+			System.out.println("Saved student. Generated Id: " + tempStudent.getId());
+		}
 	}
 
-	private Student readStudent(StudentDAO studentDAO, int id) {
-		System.out.println("Retrieving student by id...");
+	private Student readStudentId(StudentDAO studentDAO, int id) {
+		System.out.println("Retrieving student by id..." + id);
 		return studentDAO.findById(id);
 	}
 
+	// private Student readStudentEmail(StudentDAO studentDAO, String email) {
+	// System.out.println("Retrieving student by Email...");
+	// return studentDAO.findByEmail(email);
+	// }
 }

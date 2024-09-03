@@ -1,4 +1,4 @@
-package com.luv2code.cruddemo.dao;
+package com.luv2code.cruddemo.DAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,6 +28,11 @@ public class StudentDAOImpl implements StudentDAO {
     public Student findById(int id) {
         return entityManager.find(Student.class, id);
     }
+
+    // @Override
+    // public Student findByEmail(String email) {
+    // return entityManager.find(Student.class, email);
+    // }
 
     @Override
     @Transactional
