@@ -9,6 +9,8 @@ public interface StudentDAO {
 
     Student findByEmail(String email);
 
+    List<Student> findByLastName(String lastName);
+
     List<Student> findAll();
 
     void save(Student theStudent);
