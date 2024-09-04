@@ -29,6 +29,8 @@ public class CruddemoApplication {
 		 * Often used to perform tasks like initialization, setting up default data
 		 */
 		return runner -> {
+			resetStudents(studentDAO);
+
 			WebClient client = WebClient.create("https://jsonplaceholder.typicode.com");
 
 			List<StudentDTO> response = client.get()
@@ -82,5 +84,10 @@ public class CruddemoApplication {
 		for (Student student : students) {
 			System.out.println(student);
 		}
+	}
+
+	private void resetStudents(StudentDAO studentDAO) {
+		System.out.println("Cleaning Students Table in Database...");
+		studentDAO.deleteAll();
 	}
 }

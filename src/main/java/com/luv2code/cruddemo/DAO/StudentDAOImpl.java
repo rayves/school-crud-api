@@ -68,4 +68,12 @@ public class StudentDAOImpl implements StudentDAO {
         entityManager.merge(student);
     }
 
+    @Override
+    @Transactional
+    public void deleteAll() {
+        entityManager
+                .createNativeQuery("TRUNCATE table student")
+                .executeUpdate();
+    }
+
 }
