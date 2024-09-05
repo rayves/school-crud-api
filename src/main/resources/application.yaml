@@ -7,7 +7,19 @@ spring:
     url: jdbc:mysql://localhost:3306/student_tracker
     username: springstudent
     password: springstudent
+  # jpa:
+  #   hibernate:
+  #     ddl-auto: create
+  #     # configt to drop and recreate tables
 
 logging:
   level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: trace
+            # log values for SQL statements
+        SQL: debug
+        # Log SQL statements
     root: warn
