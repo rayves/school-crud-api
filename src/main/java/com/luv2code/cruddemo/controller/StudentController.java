@@ -19,6 +19,11 @@ public class StudentController {
     @Autowired
     private StudentDAO studentDAO;
 
+    @GetMapping("/")
+    public String getWelcome() {
+        return new String("Welcome");
+    }
+
     @GetMapping("/students")
     public List<Student> getStudents() {
         return studentDAO.findAll();

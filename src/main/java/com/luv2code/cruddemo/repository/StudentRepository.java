@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 // Automatic exception translation - Spring will catch any persistence related
 // exceptions and rethrow them as one of Spring's unchecked data access
 // exceptions.
+// Directly touches the database.
 public class StudentRepository implements StudentDAO {
 
     @PersistenceContext
