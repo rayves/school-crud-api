@@ -71,6 +71,7 @@ public class StudentDAOImpl implements StudentDAO {
     @Override
     @Transactional
     public void deleteAll() {
+        // Deletes all and resets id numbering
         entityManager
                 .createNativeQuery("TRUNCATE table student")
                 .executeUpdate();
