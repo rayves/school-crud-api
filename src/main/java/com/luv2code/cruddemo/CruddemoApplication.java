@@ -51,6 +51,7 @@ public class CruddemoApplication {
 	}
 
 	private void createStudents(StudentDAO studentDAO, List<StudentDTO> students) {
+		System.out.println("Creating all new students...");
 		for (StudentDTO student : students) {
 			System.out.println("Creating new student object...");
 			String firstName = student.getFullName().split(" ")[0].toLowerCase();
