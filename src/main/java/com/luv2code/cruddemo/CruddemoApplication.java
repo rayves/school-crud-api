@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.luv2code.cruddemo.dto.StudentDTO;
 import com.luv2code.cruddemo.model.Student;
-import com.luv2code.cruddemo.repository.StudentDAO;
+import com.luv2code.cruddemo.service.StudentService;
 
 @SpringBootApplication
 public class CruddemoApplication {
@@ -21,7 +21,7 @@ public class CruddemoApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
+	public CommandLineRunner commandLineRunner(StudentService studentService) {
 		/*
 		 * CommandLineRunner is used to run code after the Spring application context
 		 * has been loaded (after Spring beans have been loaded) and before the
@@ -29,7 +29,7 @@ public class CruddemoApplication {
 		 * Often used to perform tasks like initialization, setting up default data
 		 */
 		return runner -> {
-			resetStudents(studentDAO);
+			studentService.resetStudents();
 
 			WebClient client = WebClient.create("https://jsonplaceholder.typicode.com");
 
@@ -40,55 +40,12 @@ public class CruddemoApplication {
 					})
 					.block();
 
-			createStudents(studentDAO, response);
-			Student myStudent = queryByStudentEmail(studentDAO, "rey.padberg@karina.biz");
-			System.out.println("Found the student " + myStudent);
-			queryForStudents(studentDAO);
-
-			updateStudent(studentDAO, myStudent);
-			System.out.println("Updated Student... " + myStudent);
+			studentService.createStudents(response);
+			Student myStudent = studentService.queryByStudentEmail("rey.padberg@karina.biz");
+			studentService.queryForAllStudents();
+			studentService.updateStudent(myStudent);
+			System.out.println("APP READY FOR REQUESTS");
 		};
 	}
 
-	private void createStudents(StudentDAO studentDAO, List<StudentDTO> students) {
-		System.out.println("Creating all new students...");
-		for (StudentDTO student : students) {
-			System.out.println("Creating new student object...");
-			String firstName = student.getFullName().split(" ")[0].toLowerCase();
-			String lastName = student.getFullName().split(" ")[1].toLowerCase();
-			Student tempStudent = new Student(firstName, lastName, student.getEmail().toLowerCase());
-			System.out.println("Saving new student...");
-			studentDAO.save(tempStudent);
-			System.out.println("Saved student. Generated Id: " + tempStudent.getId());
-		}
-	}
-
-	private void updateStudent(StudentDAO studentDAO, Student myStudent) {
-		System.out.println("Updating student..." + myStudent);
-		myStudent.setLastName("TEST");
-		studentDAO.update(myStudent);
-	}
-
-	private Student queryByStudentId(StudentDAO studentDAO, int id) {
-		System.out.println("Retrieving student by id..." + id);
-		return studentDAO.findById(id);
-	}
-
-	private Student queryByStudentEmail(StudentDAO studentDAO, String email) {
-		System.out.println("Retrieving student by Email..." + email);
-		return studentDAO.findByEmail(email);
-	}
-
-	private void queryForStudents(StudentDAO studentDAO) {
-		System.out.println("Retrieving all students...");
-		List<Student> students = studentDAO.findAll();
-		for (Student student : students) {
-			System.out.println(student);
-		}
-	}
-
-	private void resetStudents(StudentDAO studentDAO) {
-		System.out.println("Cleaning Students Table in Database...");
-		studentDAO.deleteAll();
-	}
 }

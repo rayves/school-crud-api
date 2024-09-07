@@ -2,12 +2,12 @@ package com.luv2code.cruddemo.repository;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.luv2code.cruddemo.model.Student;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
@@ -19,13 +19,9 @@ import jakarta.transaction.Transactional;
 // exceptions.
 public class StudentRepository implements StudentDAO {
 
+    @PersistenceContext
+    // used specifically for injecting EntityManager
     private EntityManager entityManager;
-
-    @Autowired
-    // Autowired is optional if there is only 1 constructor
-    public StudentRepository(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     @Override
     public List<Student> findAll() {
