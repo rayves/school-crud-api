@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.luv2code.cruddemo.DAO.StudentDAO;
-import com.luv2code.cruddemo.DTO.StudentDTO;
-import com.luv2code.cruddemo.entity.Student;
+import com.luv2code.cruddemo.dto.StudentDTO;
+import com.luv2code.cruddemo.model.Student;
+import com.luv2code.cruddemo.repository.StudentDAO;
 
 @SpringBootApplication
 public class CruddemoApplication {

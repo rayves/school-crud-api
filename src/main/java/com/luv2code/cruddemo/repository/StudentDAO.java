@@ -1,8 +1,8 @@
-package com.luv2code.cruddemo.DAO;
+package com.luv2code.cruddemo.repository;
 
 import java.util.List;
 
-import com.luv2code.cruddemo.entity.Student;
+import com.luv2code.cruddemo.model.Student;
 
 public interface StudentDAO {
     Student findById(int id);

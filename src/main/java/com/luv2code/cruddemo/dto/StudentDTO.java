@@ -1,4 +1,4 @@
-package com.luv2code.cruddemo.DTO;
+package com.luv2code.cruddemo.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
