@@ -1,6 +1,7 @@
 package com.luv2code.cruddemo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,9 +38,9 @@ public class StudentService {
         System.out.println("Updated Student... " + student);
     }
 
-    public Student queryByStudentId(int id) {
+    public Optional<Student> queryByStudentId(int id) {
         System.out.println("Retrieving student by id..." + id);
-        return studentRepository.findById(id);
+        return Optional.ofNullable(studentRepository.findById(id));
     }
 
     public Student queryByStudentEmail(String email) {
@@ -50,12 +51,13 @@ public class StudentService {
         return student;
     }
 
-    public void queryForAllStudents() {
+    public List<Student> queryForAllStudents() {
         System.out.println("Retrieving all students...");
         List<Student> students = studentRepository.findAll();
         for (Student student : students) {
             System.out.println(student);
         }
+        return students;
     }
 
     public void resetStudents() {
