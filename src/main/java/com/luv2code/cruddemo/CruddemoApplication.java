@@ -20,32 +20,33 @@ public class CruddemoApplication {
 		SpringApplication.run(CruddemoApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner commandLineRunner(StudentService studentService) {
-		/*
-		 * CommandLineRunner is used to run code after the Spring application context
-		 * has been loaded (after Spring beans have been loaded) and before the
-		 * application starts serving requests.\
-		 * Often used to perform tasks like initialization, setting up default data
-		 */
-		return runner -> {
-			studentService.resetStudents();
+	// @Bean
+	// public CommandLineRunner commandLineRunner(StudentService studentService) {
+	// /*
+	// * CommandLineRunner is used to run code after the Spring application context
+	// * has been loaded (after Spring beans have been loaded) and before the
+	// * application starts serving requests.\
+	// * Often used to perform tasks like initialization, setting up default data
+	// */
+	// return runner -> {
+	// studentService.resetStudents();
 
-			WebClient client = WebClient.create("https://jsonplaceholder.typicode.com");
+	// WebClient client = WebClient.create("https://jsonplaceholder.typicode.com");
 
-			List<StudentDTO> response = client.get()
-					.uri("/users")
-					.retrieve()
-					.bodyToMono(new ParameterizedTypeReference<List<StudentDTO>>() {
-					})
-					.block();
+	// List<StudentDTO> response = client.get()
+	// .uri("/users")
+	// .retrieve()
+	// .bodyToMono(new ParameterizedTypeReference<List<StudentDTO>>() {
+	// })
+	// .block();
 
-			studentService.createStudents(response);
-			Student myStudent = studentService.queryByStudentEmail("rey.padberg@karina.biz");
-			studentService.queryForAllStudents();
-			studentService.updateStudent(myStudent);
-			System.out.println("APP READY FOR REQUESTS");
-		};
-	}
+	// studentService.createStudents(response);
+	// Student myStudent =
+	// studentService.queryByStudentEmail("rey.padberg@karina.biz");
+	// studentService.queryForAllStudents();
+	// studentService.updateStudent(myStudent);
+	// System.out.println("APP READY FOR REQUESTS");
+	// };
+	// }
 
 }
