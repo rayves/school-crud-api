@@ -3,13 +3,17 @@ package com.luv2code.cruddemo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.luv2code.cruddemo.exception.StudentErrorResponse;
+import com.luv2code.cruddemo.exception.StudentNotFoundException;
 import com.luv2code.cruddemo.model.Student;
 import com.luv2code.cruddemo.service.StudentService;
 
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -32,9 +36,19 @@ public class StudentController {
 
     @GetMapping("/students/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable int id) {
-        return studentService.queryByStudentId(id)
-                .map(student -> ResponseEntity.ok().body(student))
-                .orElse(ResponseEntity.notFound().build());
+        Student student = studentService.queryByStudentId(id);
+        return ResponseEntity.ok().body(student);
+    }
+
+    @ExceptionHandler(StudentNotFoundException.class)
+    public ResponseEntity<StudentErrorResponse> handleStudentNotFoundException(StudentNotFoundException ex) {
+
+        StudentErrorResponse error = new StudentErrorResponse();
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setMessage(ex.getMessage());
+        error.setTimeStamp(System.currentTimeMillis());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
 }

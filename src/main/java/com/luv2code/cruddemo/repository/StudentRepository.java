@@ -1,6 +1,7 @@
 package com.luv2code.cruddemo.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -31,8 +32,8 @@ public class StudentRepository implements StudentDAO {
     }
 
     @Override
-    public Student findById(int id) {
-        return entityManager.find(Student.class, id);
+    public Optional<Student> findById(int id) {
+        return Optional.ofNullable(entityManager.find(Student.class, id));
     }
 
     @Override

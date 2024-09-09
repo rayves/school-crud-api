@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.luv2code.cruddemo.dto.StudentDTO;
+import com.luv2code.cruddemo.exception.StudentNotFoundException;
 import com.luv2code.cruddemo.model.Student;
 import com.luv2code.cruddemo.repository.StudentRepository;
 
@@ -38,9 +39,11 @@ public class StudentService {
         System.out.println("Updated Student... " + student);
     }
 
-    public Optional<Student> queryByStudentId(int id) {
+    // Optional used to allow for causes where Student cannot be found
+    public Student queryByStudentId(int id) {
         System.out.println("Retrieving student by id..." + id);
-        return Optional.ofNullable(studentRepository.findById(id));
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(String.format("Student of id %d not found", id)));
     }
 
     public Student queryByStudentEmail(String email) {

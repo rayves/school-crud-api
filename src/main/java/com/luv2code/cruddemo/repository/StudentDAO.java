@@ -1,11 +1,12 @@
 package com.luv2code.cruddemo.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.luv2code.cruddemo.model.Student;
 
 public interface StudentDAO {
-    Student findById(int id);
+    Optional<Student> findById(int id);
 
     Student findByEmail(String email);
 
