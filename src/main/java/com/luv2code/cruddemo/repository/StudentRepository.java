@@ -32,6 +32,7 @@ public class StudentRepository implements StudentDAO {
     }
 
     @Override
+    // Optional used to allow for causes where Student cannot be found
     public Optional<Student> findById(int id) {
         return Optional.ofNullable(entityManager.find(Student.class, id));
     }

@@ -39,7 +39,6 @@ public class StudentService {
         System.out.println("Updated Student... " + student);
     }
 
-    // Optional used to allow for causes where Student cannot be found
     public Student queryByStudentId(int id) {
         System.out.println("Retrieving student by id..." + id);
         return studentRepository.findById(id)
