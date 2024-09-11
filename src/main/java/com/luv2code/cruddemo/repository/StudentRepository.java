@@ -79,7 +79,8 @@ public class StudentRepository implements StudentDAO {
     @Override
     @Transactional
     public void delete(int id) {
-        Student student = entityManager.find(Student.class, id);
-        entityManager.remove(student);
+        Optional<Student> student = this.findById(id);
+        student.ifPresentOrElse(entityManager::remove,
+                () -> System.out.println("Student with id " + id + " not found."));
     }
 }
