@@ -54,7 +54,6 @@ public class StudentRepository implements IStudentRepository {
     }
 
     @Override
-    @Transactional
     // Transactional annotation required as the method is performing an update
     // transaction with the database
     public void save(Student theStudent) {
@@ -62,13 +61,13 @@ public class StudentRepository implements IStudentRepository {
     }
 
     @Override
-    @Transactional
     public void update(Student student) {
+        // merge saves or updates the record - if id == 0 then save/insert otherwise
+        // update
         entityManager.merge(student);
     }
 
     @Override
-    @Transactional
     public void deleteAll() {
         // Deletes all and resets id numbering
         entityManager
