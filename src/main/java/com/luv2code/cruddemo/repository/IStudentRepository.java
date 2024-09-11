@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.luv2code.cruddemo.model.Student;
 
-public interface StudentDAO {
+public interface IStudentRepository {
     Optional<Student> findById(int id);
 
     Student findByEmail(String email);

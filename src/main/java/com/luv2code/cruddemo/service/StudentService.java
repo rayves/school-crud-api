@@ -14,7 +14,7 @@ import com.luv2code.cruddemo.repository.StudentRepository;
 @Service
 // Handles the business logic related the database but does not directly touch
 // the database
-public class StudentService {
+public class StudentService implements IStudentService {
 
     @Autowired
     private StudentRepository studentRepository;

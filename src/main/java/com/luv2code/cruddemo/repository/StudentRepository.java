@@ -19,7 +19,7 @@ import jakarta.transaction.Transactional;
 // exceptions and rethrow them as one of Spring's unchecked data access
 // exceptions.
 // Directly touches the database.
-public class StudentRepository implements StudentDAO {
+public class StudentRepository implements IStudentRepository {
 
     @PersistenceContext
     // used specifically for injecting EntityManager
