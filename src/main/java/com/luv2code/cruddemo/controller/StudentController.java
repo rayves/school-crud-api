@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.luv2code.cruddemo.exception.StudentErrorResponse;
 import com.luv2code.cruddemo.exception.StudentNotFoundException;
 import com.luv2code.cruddemo.model.Student;
-import com.luv2code.cruddemo.service.StudentService;
+import com.luv2code.cruddemo.service.IStudentService;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class StudentController {
 
     @Autowired
-    private StudentService studentService;
+    private IStudentService studentService;
 
     @GetMapping("/")
     public String getWelcome() {

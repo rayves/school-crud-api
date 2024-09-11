@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.luv2code.cruddemo.dto.StudentDTO;
 import com.luv2code.cruddemo.exception.StudentNotFoundException;
 import com.luv2code.cruddemo.model.Student;
-import com.luv2code.cruddemo.repository.StudentRepository;
+import com.luv2code.cruddemo.repository.IStudentRepository;
 
 @Service
 // Handles the business logic related the database but does not directly touch
@@ -16,7 +16,7 @@ import com.luv2code.cruddemo.repository.StudentRepository;
 public class StudentService implements IStudentService {
 
     @Autowired
-    private StudentRepository studentRepository;
+    private IStudentRepository studentRepository;
 
     public void createStudents(List<StudentDTO> students) {
         System.out.println("Creating all new students...");
