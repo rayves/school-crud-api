@@ -10,7 +10,7 @@ import com.luv2code.cruddemo.exception.StudentNotFoundException;
 import com.luv2code.cruddemo.model.Student;
 import com.luv2code.cruddemo.repository.IStudentRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 // Handles the business logic related the database but does not directly touch
@@ -21,13 +21,14 @@ public class StudentService implements IStudentService {
     private IStudentRepository studentRepository;
 
     // GET
-
+    @Transactional(readOnly = true)
     public Student queryByStudentId(int id) {
         System.out.println("Retrieving student by id..." + id);
         return studentRepository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(String.format("Student of id %d not found", id)));
     }
 
+    @Transactional(readOnly = true)
     public Student queryByStudentEmail(String email) {
         System.out.println("Retrieving student by Email..." + email);
         Student student = studentRepository.findByEmail(email);
@@ -36,6 +37,7 @@ public class StudentService implements IStudentService {
         return student;
     }
 
+    @Transactional(readOnly = true)
     public List<Student> queryForAllStudents() {
         System.out.println("Retrieving all students...");
         List<Student> students = studentRepository.findAll();
