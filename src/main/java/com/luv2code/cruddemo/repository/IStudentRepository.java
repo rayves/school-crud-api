@@ -14,6 +14,8 @@ public interface IStudentRepository {
 
     List<Student> findAll();
 
+    Optional<Student> findLastStudent();
+
     void save(Student student);
 
     void update(Student student);

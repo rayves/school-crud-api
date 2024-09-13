@@ -10,7 +10,8 @@ import com.luv2code.cruddemo.model.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 // Indicates that the class is a Data Access Object (DAO) component in the
@@ -29,6 +30,30 @@ public class StudentRepository implements IStudentRepository {
     public List<Student> findAll() {
         TypedQuery<Student> query = entityManager.createQuery("FROM Student ORDER BY lastName asc", Student.class);
         return query.getResultList();
+    }
+
+    @Override
+    public Optional<Student> findLastStudent() {
+        // * Query that sorts the database table in desc order by id and returns the
+        // first
+        // record
+        // String jpql = "SELECT s FROM Student s ORDER BY s.id DESC";
+        // TypedQuery<Student> query = entityManager.createQuery(jpql, Student.class)
+        // .setMaxResults(1);
+        // return Optional.ofNullable(query.getSingleResult());
+
+        // * Query that finds and returns the record with the max id through
+        // sub-querying
+        // String jpql = "SELECT s FROM Student s WHERE s.id = (SELECT max(s2.id) FROM
+        // Student s2)";
+        // TypedQuery<Student> query = entityManager.createQuery(jpql, Student.class)
+        // .setMaxResults(1);
+        // return Optional.ofNullable(query.getSingleResult());
+
+        String sql = "SELECT * FROM student WHERE id = (SELECT max(id) FROM student)";
+        List<Student> resultList = entityManager.createNativeQuery(sql, Student.class)
+                .getResultList();
+        return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
     }
 
     @Override

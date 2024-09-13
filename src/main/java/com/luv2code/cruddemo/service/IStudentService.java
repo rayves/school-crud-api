@@ -11,6 +11,8 @@ public interface IStudentService {
 
     public void updateStudent(Student student);
 
+    public Student createStudent(Student students);
+
     public Student queryByStudentId(int id);
 
     public Student queryByStudentEmail(String email);

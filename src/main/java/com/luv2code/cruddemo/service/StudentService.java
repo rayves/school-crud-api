@@ -1,6 +1,7 @@
 package com.luv2code.cruddemo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,16 @@ public class StudentService implements IStudentService {
     }
 
     // POST
+
+    @Transactional
+    public Student createStudent(Student student) {
+        System.out.println("Creating new student..." + student);
+        studentRepository.save(student);
+        Optional<Student> newStudent = studentRepository.findLastStudent();
+        return newStudent
+                .orElseThrow(() -> new StudentNotFoundException(
+                        String.format("Last student created $s cannot be found", student)));
+    }
 
     @Transactional
     public void createStudents(List<StudentDTO> students) {

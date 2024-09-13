@@ -16,6 +16,8 @@ import com.luv2code.cruddemo.service.IStudentService;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/")
@@ -38,6 +40,12 @@ public class StudentController {
     public ResponseEntity<Student> getStudentById(@PathVariable int id) {
         Student student = studentService.queryByStudentId(id);
         return ResponseEntity.ok().body(student);
+    }
+
+    @PostMapping("/students")
+    public ResponseEntity<Student> createNewStudent(@RequestBody Student student) {
+        Student newStudent = studentService.createStudent(student);
+        return ResponseEntity.ok().body(newStudent);
     }
 
     @ExceptionHandler(StudentNotFoundException.class)
