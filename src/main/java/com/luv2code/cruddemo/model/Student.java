@@ -61,7 +61,7 @@ public class Student {
     }
 
     public String getEmail() {
-        return firstName;
+        return email;
     }
 
     public void setEmail(String email) {
