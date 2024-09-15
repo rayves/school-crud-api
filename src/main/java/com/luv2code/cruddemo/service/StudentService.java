@@ -3,10 +3,15 @@ package com.luv2code.cruddemo.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.luv2code.cruddemo.dto.StudentDTO;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.luv2code.cruddemo.dto.StudentDummyDataPayload;
+import com.luv2code.cruddemo.dto.StudentUpdateRequest;
 import com.luv2code.cruddemo.exception.StudentNotFoundException;
 import com.luv2code.cruddemo.model.Student;
 import com.luv2code.cruddemo.repository.IStudentRepository;
@@ -20,6 +25,9 @@ public class StudentService implements IStudentService {
 
     @Autowired
     private IStudentRepository studentRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     // GET
     @Transactional(readOnly = true)
@@ -61,9 +69,9 @@ public class StudentService implements IStudentService {
     }
 
     @Transactional
-    public void createStudents(List<StudentDTO> students) {
+    public void createStudents(List<StudentDummyDataPayload> students) {
         System.out.println("Creating all new students...");
-        for (StudentDTO student : students) {
+        for (StudentDummyDataPayload student : students) {
             System.out.println("Creating new student object...");
             String firstName = student.getFullName().split(" ")[0].toLowerCase();
             String lastName = student.getFullName().split(" ")[1].toLowerCase();
@@ -77,11 +85,17 @@ public class StudentService implements IStudentService {
     // PUT
 
     @Transactional
-    public void updateStudent(Student student) {
-        System.out.println("Updating student..." + student);
-        student.setLastName("TEST");
-        studentRepository.update(student);
-        System.out.println("Updated Student... " + student);
+    public Student updateStudent(int id, StudentUpdateRequest studentUpdate) {
+        System.out.println("Updating student with id..." + id);
+        Student existingStudent = this.queryByStudentId(id);
+        try {
+            objectMapper.updateValue(existingStudent, studentUpdate);
+        } catch (JsonMappingException ex) {
+            throw new RuntimeException("Failed to map JSON to Student object " + ex.getOriginalMessage(), ex);
+        }
+        studentRepository.update(existingStudent);
+        System.out.println("Updated Student... " + existingStudent);
+        return existingStudent;
     }
 
     // DELETE

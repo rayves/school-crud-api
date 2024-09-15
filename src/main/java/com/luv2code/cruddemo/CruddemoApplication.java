@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.luv2code.cruddemo.dto.StudentDTO;
+import com.luv2code.cruddemo.dto.StudentDummyDataPayload;
 import com.luv2code.cruddemo.model.Student;
 import com.luv2code.cruddemo.service.StudentService;
 

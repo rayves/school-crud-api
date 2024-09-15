@@ -9,8 +9,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.luv2code.cruddemo.dto.StudentDTO;
-import com.luv2code.cruddemo.model.Student;
+import com.luv2code.cruddemo.dto.StudentDummyDataPayload;
 import com.luv2code.cruddemo.service.StudentService;
 
 @Component
@@ -31,17 +30,15 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 
             WebClient client = WebClient.create("https://jsonplaceholder.typicode.com");
 
-            List<StudentDTO> response = client.get()
+            List<StudentDummyDataPayload> response = client.get()
                     .uri("/users")
                     .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<List<StudentDTO>>() {
+                    .bodyToMono(new ParameterizedTypeReference<List<StudentDummyDataPayload>>() {
                     })
                     .block();
 
             studentService.createStudents(response);
-            Student myStudent = studentService.queryByStudentEmail("rey.padberg@karina.biz");
             studentService.queryForAllStudents();
-            studentService.updateStudent(myStudent);
             System.out.println("APP READY FOR REQUESTS");
 
             hasRun = true;

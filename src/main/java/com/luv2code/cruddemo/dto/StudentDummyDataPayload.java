@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class StudentDTO {
+public class StudentDummyDataPayload {
     @JsonProperty("name")
     private String fullName;
     private String email;
 
-    public StudentDTO() {
+    public StudentDummyDataPayload() {
     }
 
-    public StudentDTO(String fullName, String email) {
+    public StudentDummyDataPayload(String fullName, String email) {
         this.fullName = fullName;
         this.email = email;
     }

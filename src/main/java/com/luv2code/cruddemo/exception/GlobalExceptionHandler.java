@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -24,4 +26,14 @@ public class GlobalExceptionHandler {
     // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An
     // unexpected error occurred.");
     // }
+
+    @ExceptionHandler(JsonMappingException.class)
+    public ResponseEntity<StudentErrorResponse> handleJsonMappingException(JsonMappingException ex) {
+        StudentErrorResponse error = new StudentErrorResponse();
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setMessage("Invalid JSON: " + ex.getMessage());
+        error.setTimeStamp(System.currentTimeMillis());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
 }
