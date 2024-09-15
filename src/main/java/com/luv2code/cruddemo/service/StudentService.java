@@ -50,6 +50,7 @@ public class StudentService implements IStudentService {
     public List<Student> queryForAllStudents() {
         System.out.println("Retrieving all students...");
         List<Student> students = studentRepository.findAll();
+        System.out.println("Number of Students found: " + students.size());
         for (Student student : students) {
             System.out.println(student);
         }
@@ -104,6 +105,13 @@ public class StudentService implements IStudentService {
     public void resetStudents() {
         System.out.println("Cleaning Students Table in Database...");
         studentRepository.deleteAll();
+    }
+
+    @Transactional
+    public void deleteStudent(int id) {
+        Student student = this.queryByStudentId(id);
+        studentRepository.delete(id);
+        System.out.println("Student Deleted..." + student);
     }
 
 }

@@ -8,13 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.luv2code.cruddemo.dto.StudentUpdateRequest;
 import com.luv2code.cruddemo.exception.StudentErrorResponse;
 import com.luv2code.cruddemo.exception.StudentNotFoundException;
 import com.luv2code.cruddemo.model.Student;
 import com.luv2code.cruddemo.service.IStudentService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +60,13 @@ public class StudentController {
     public ResponseEntity<Student> putStudent(@PathVariable int id, @RequestBody StudentUpdateRequest studentUpdate) {
         Student updatedStudent = studentService.updateStudent(id, studentUpdate);
         return ResponseEntity.ok().body(updatedStudent);
+    }
+
+    // DELETE
+    @DeleteMapping("students/{id}")
+    public ResponseEntity<String> deleteStudent(@PathVariable int id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().body(String.format("Student %1$s has been deleted", id));
     }
 
     @ExceptionHandler(StudentNotFoundException.class)

@@ -21,4 +21,6 @@ public interface IStudentService {
     public List<Student> queryForAllStudents();
 
     public void resetStudents();
+
+    public void deleteStudent(int id);
 }
