@@ -14,6 +14,8 @@ import com.luv2code.cruddemo.exception.StudentNotFoundException;
 import com.luv2code.cruddemo.model.Student;
 import com.luv2code.cruddemo.service.IStudentService;
 
+import lombok.AllArgsConstructor;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +26,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/")
+@AllArgsConstructor
 public class StudentController {
 
-    @Autowired
     private IStudentService studentService;
 
     // GET

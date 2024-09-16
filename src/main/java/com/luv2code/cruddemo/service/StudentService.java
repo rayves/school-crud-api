@@ -3,9 +3,6 @@ package com.luv2code.cruddemo.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.management.RuntimeErrorException;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -16,17 +13,20 @@ import com.luv2code.cruddemo.exception.StudentNotFoundException;
 import com.luv2code.cruddemo.model.Student;
 import com.luv2code.cruddemo.repository.IStudentRepository;
 
+import lombok.AllArgsConstructor;
+
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 // Handles the business logic related the database but does not directly touch
 // the database
+@AllArgsConstructor
+// With this AllArgsConstructor annotation there will only be 1 constructor,
+// therefore no need to use @Autowired
 public class StudentService implements IStudentService {
 
-    @Autowired
     private IStudentRepository studentRepository;
 
-    @Autowired
     private ObjectMapper objectMapper;
 
     // GET
@@ -34,7 +34,10 @@ public class StudentService implements IStudentService {
     public Student queryByStudentId(int id) {
         System.out.println("Retrieving student by id..." + id);
         return studentRepository.findById(id)
-                .orElseThrow(() -> new StudentNotFoundException(String.format("Student of id %d not found", id)));
+                .orElseThrow(() -> {
+                    System.out.println("Student with Id " + id + " not found");
+                    return new StudentNotFoundException(String.format("Student of id %d not found", id));
+                });
     }
 
     @Transactional(readOnly = true)

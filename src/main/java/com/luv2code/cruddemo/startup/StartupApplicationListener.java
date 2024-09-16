@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.luv2code.cruddemo.dto.StudentDummyDataPayload;
-import com.luv2code.cruddemo.service.StudentService;
+import com.luv2code.cruddemo.service.IStudentService;
 
 @Component
 public class StartupApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
 
-    private final StudentService studentService;
+    private final IStudentService studentService;
     private boolean hasRun = false;
 
     @Autowired
-    public StartupApplicationListener(StudentService studentService) {
+    public StartupApplicationListener(IStudentService studentService) {
         this.studentService = studentService;
     }
 

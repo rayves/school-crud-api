@@ -10,6 +10,7 @@ import com.luv2code.cruddemo.model.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import lombok.AllArgsConstructor;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 // exceptions and rethrow them as one of Spring's unchecked data access
 // exceptions.
 // Directly touches the database.
+@AllArgsConstructor
 public class StudentRepository implements IStudentRepository {
 
     @PersistenceContext
