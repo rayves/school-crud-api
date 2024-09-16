@@ -46,16 +46,19 @@ public class StudentRepository implements IStudentRepository {
 
         // * Query that finds and returns the record with the max id through
         // sub-querying
-        // String jpql = "SELECT s FROM Student s WHERE s.id = (SELECT max(s2.id) FROM
-        // Student s2)";
-        // TypedQuery<Student> query = entityManager.createQuery(jpql, Student.class)
-        // .setMaxResults(1);
-        // return Optional.ofNullable(query.getSingleResult());
+        String jpql = "SELECT s FROM Student s WHERE s.id = (SELECT max(s2.id) FROM Student s2)";
+        TypedQuery<Student> query = entityManager.createQuery(jpql, Student.class)
+                .setMaxResults(1);
+        return Optional.ofNullable(query.getSingleResult());
 
-        String sql = "SELECT * FROM student WHERE id = (SELECT max(id) FROM student)";
-        List<Student> resultList = entityManager.createNativeQuery(sql, Student.class)
-                .getResultList();
-        return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
+        // Native Query for finding and returning last student
+        // String sql = "SELECT * FROM student WHERE id = (SELECT max(id) FROM
+        // student)";
+        // List<Student> resultList = entityManager.createNativeQuery(sql,
+        // Student.class)
+        // .getResultList();
+        // return resultList.isEmpty() ? Optional.empty() :
+        // Optional.of(resultList.get(0));
     }
 
     @Override
