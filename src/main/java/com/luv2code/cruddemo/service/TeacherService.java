@@ -23,14 +23,7 @@ public class TeacherService implements ITeacherService {
     public Teacher findById(Integer id) {
         Optional<Teacher> result = teacherRepository.findById(id);
 
-        Teacher teacher = null;
-
-        if (result.isPresent()) {
-            teacher = result.get();
-            System.out.println(teacher);
-        }
-
-        return teacher;
+        return result.orElseThrow(() -> new RuntimeException("Teacher cannot be found"));
     }
 
     @Override
