@@ -1,4 +1,4 @@
-package com.luv2code.cruddemo.entity;
+package com.luv2code.cruddemo.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -61,7 +61,7 @@ public class Student {
     }
 
     public String getEmail() {
-        return firstName;
+        return email;
     }
 
     public void setEmail(String email) {
