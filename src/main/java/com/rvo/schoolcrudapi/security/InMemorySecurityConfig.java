@@ -17,47 +17,47 @@ import com.rvo.schoolcrudapi.enums.Role;
 @Configuration
 public class InMemorySecurityConfig {
 
-        private static final String ENDPOINT_STUDENTS = "/students";
+    private static final String ENDPOINT_STUDENTS = "/students";
 
-        // Users to be added to the add in memory
-        @Bean
-        public InMemoryUserDetailsManager userDetailsManager() {
+    // Users to be added to the add in memory
+    @Bean
+    public InMemoryUserDetailsManager userDetailsManager() {
 
-                UserDetails john = createUsers("john", "test123", Role.TEACHER);
-                UserDetails mary = createUsers("mary", "test123", Role.TEACHER, Role.PRINCIPAL);
-                UserDetails susan = createUsers("susan", "test123", Role.TEACHER, Role.PRINCIPAL, Role.ADMIN);
+        UserDetails john = createUsers("john", "test123", Role.TEACHER);
+        UserDetails mary = createUsers("mary", "test123", Role.TEACHER, Role.STUDENT);
+        UserDetails susan = createUsers("susan", "test123", Role.TEACHER, Role.STUDENT, Role.ADMIN);
 
-                return new InMemoryUserDetailsManager(john, mary, susan);
-        }
+        return new InMemoryUserDetailsManager(john, mary, susan);
+    }
 
-        private UserDetails createUsers(String user, String password, Role... roles) {
-                return User.withUsername(user)
-                                .password("{noop}" + password)
-                                .roles(
-                                                Arrays.stream(roles)
-                                                                .map(Role::name)
-                                                                .toArray(String[]::new))
-                                .build();
-        }
+    private UserDetails createUsers(String user, String password, Role... roles) {
+        return User.withUsername(user)
+                .password("{noop}" + password)
+                .roles(
+                        Arrays.stream(roles)
+                                .map(Role::name)
+                                .toArray(String[]::new))
+                .build();
+    }
 
-        // Endpoint authorization for users
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                http.authorizeHttpRequests(configurer -> configurer
-                                .requestMatchers(HttpMethod.GET, ENDPOINT_STUDENTS).hasRole(Role.TEACHER.name())
-                                .requestMatchers(HttpMethod.GET, ENDPOINT_STUDENTS + "/**").hasRole(Role.TEACHER.name())
-                                .requestMatchers(HttpMethod.POST, ENDPOINT_STUDENTS).hasRole(Role.PRINCIPAL.name())
-                                .requestMatchers(HttpMethod.PUT, ENDPOINT_STUDENTS + "/**")
-                                .hasRole(Role.PRINCIPAL.name())
-                                .requestMatchers(HttpMethod.DELETE, ENDPOINT_STUDENTS + "/**")
-                                .hasRole(Role.ADMIN.name()));
+    // Endpoint authorization for users
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(configurer -> configurer
+                .requestMatchers(HttpMethod.GET, ENDPOINT_STUDENTS).hasRole(Role.TEACHER.name())
+                .requestMatchers(HttpMethod.GET, ENDPOINT_STUDENTS + "/**").hasRole(Role.TEACHER.name())
+                .requestMatchers(HttpMethod.POST, ENDPOINT_STUDENTS).hasRole(Role.STUDENT.name())
+                .requestMatchers(HttpMethod.PUT, ENDPOINT_STUDENTS + "/**")
+                .hasRole(Role.STUDENT.name())
+                .requestMatchers(HttpMethod.DELETE, ENDPOINT_STUDENTS + "/**")
+                .hasRole(Role.ADMIN.name()));
 
-                // use HTTP Basic authentication
-                http.httpBasic(Customizer.withDefaults());
+        // use HTTP Basic authentication
+        http.httpBasic(Customizer.withDefaults());
 
-                // disable Cross Site Request Forgery (CSRF)
-                http.csrf(csrf -> csrf.disable());
+        // disable Cross Site Request Forgery (CSRF)
+        http.csrf(csrf -> csrf.disable());
 
-                return http.build();
-        }
+        return http.build();
+    }
 }
