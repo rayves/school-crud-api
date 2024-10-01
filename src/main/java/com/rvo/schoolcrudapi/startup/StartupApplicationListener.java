@@ -1,5 +1,7 @@
 package com.rvo.schoolcrudapi.startup;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,26 +14,37 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.rvo.schoolcrudapi.dto.StudentDummyDataPayload;
 import com.rvo.schoolcrudapi.dto.TeacherDummyDataPayload;
-import com.rvo.schoolcrudapi.model.Teacher;
+import com.rvo.schoolcrudapi.enums.Role;
+import com.rvo.schoolcrudapi.model.Authority;
+import com.rvo.schoolcrudapi.model.User;
+import com.rvo.schoolcrudapi.service.IAuthorityService;
 import com.rvo.schoolcrudapi.service.IStudentService;
 import com.rvo.schoolcrudapi.service.ITeacherService;
+import com.rvo.schoolcrudapi.service.IUserService;
 
 @Component
 public class StartupApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
 
     private final IStudentService studentService;
     private final ITeacherService teacherService;
+    private final IAuthorityService authorityService;
+    private final IUserService userService;
     private boolean hasRun = false;
 
     @Autowired
-    public StartupApplicationListener(IStudentService studentService, ITeacherService teacherService) {
+    public StartupApplicationListener(IStudentService studentService, ITeacherService teacherService,
+            IAuthorityService authorityService, IUserService userService) {
         this.studentService = studentService;
         this.teacherService = teacherService;
+        this.authorityService = authorityService;
+        this.userService = userService;
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (!hasRun) {
+            createAuthorities();
+            createUsers();
             createStudents();
             createTeachers();
 
@@ -39,6 +52,30 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 
             hasRun = true;
         }
+    }
+
+    public void createAuthorities() {
+        List<Authority> authorities = new ArrayList<>(Arrays.asList(
+                new Authority(Role.ADMIN.name().toLowerCase()),
+                new Authority(Role.TEACHER.name().toLowerCase()),
+                new Authority(Role.STUDENT.name().toLowerCase())));
+        for (Authority authority : authorities) {
+            authorityService.createAuthority(authority);
+        }
+    }
+
+    public void createUsers() {
+        userService.createUserWithAuthorities(
+                new User("admin", "admin123"),
+                new ArrayList<>(Arrays.asList(Role.ADMIN.name(), Role.TEACHER.name(), Role.STUDENT.name())));
+
+        userService.createUserWithAuthorities(
+                new User("teacher", "teacher123"),
+                new ArrayList<>(Arrays.asList(Role.TEACHER.name(), Role.STUDENT.name())));
+
+        userService.createUserWithAuthorities(
+                new User("student", "student123"),
+                new ArrayList<>(Arrays.asList(Role.STUDENT.name())));
     }
 
     public void createStudents() {

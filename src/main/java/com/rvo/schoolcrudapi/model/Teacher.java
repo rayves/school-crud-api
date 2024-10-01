@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "teacher")
+@Table(name = "teachers")
 @Data
 @NoArgsConstructor
 public class Teacher {
@@ -21,6 +21,7 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Setter(AccessLevel.NONE)
+    // TODO refactor id from int to Long
     private Integer id;
 
     @Column(name = "first_name")

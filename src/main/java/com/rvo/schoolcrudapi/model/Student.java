@@ -8,13 +8,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "student")
+@Table(name = "students")
 public class Student {
 
     // Define fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    // TODO refactor id from int to Long
     private int id;
 
     @Column(name = "first_name")
