@@ -11,7 +11,7 @@ public interface ITeacherService {
 
     public List<Teacher> findAll();
 
-    public void createTeachers(List<TeacherDummyDataPayload> teachers);
+    public void createTeachers(TeacherDummyDataPayload teacherPayload);
 
     public void deleteTeachers();
 

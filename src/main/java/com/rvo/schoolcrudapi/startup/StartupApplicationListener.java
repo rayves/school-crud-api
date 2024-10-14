@@ -3,7 +3,6 @@ package com.rvo.schoolcrudapi.startup;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -54,7 +53,7 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
         }
     }
 
-    public void createAuthorities() {
+    private void createAuthorities() {
         List<Authority> authorities = new ArrayList<>(Arrays.asList(
                 new Authority(Role.ADMIN.name().toLowerCase()),
                 new Authority(Role.TEACHER.name().toLowerCase()),
@@ -64,7 +63,7 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
         }
     }
 
-    public void createUsers() {
+    private void createUsers() {
         userService.createUserWithAuthorities(
                 new User("admin", "admin123"),
                 new ArrayList<>(Arrays.asList(Role.ADMIN.name(), Role.TEACHER.name(), Role.STUDENT.name())));
@@ -78,7 +77,7 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
                 new ArrayList<>(Arrays.asList(Role.STUDENT.name())));
     }
 
-    public void createStudents() {
+    private void createStudents() {
         // studentService.resetStudents();
 
         WebClient client = WebClient.create("https://jsonplaceholder.typicode.com");
@@ -94,18 +93,18 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
         studentService.queryForAllStudents();
     }
 
-    public void createTeachers() {
-        WebClient client = WebClient.create("https://freetestapi.com/api/v1");
+    private void createTeachers() {
+        WebClient client = WebClient.create("https://dummyjson.com");
 
-        List<TeacherDummyDataPayload> response = client.get()
-                .uri("/teachers")
+        TeacherDummyDataPayload response = client.get()
+                .uri("/users?limit=5&select=firstName,lastName,age,email,company")
                 .retrieve()
-                .bodyToFlux(TeacherDummyDataPayload.class)
-                .collectList()
-                .block()
-                .stream()
-                .limit(5)
-                .collect(Collectors.toList());
+                .bodyToMono(TeacherDummyDataPayload.class)
+                // .collectList()
+                .block();
+        // .stream()
+        // .limit(5)
+        // .collect(Collectors.toList());
 
         teacherService.createTeachers(response);
         teacherService.findAll();

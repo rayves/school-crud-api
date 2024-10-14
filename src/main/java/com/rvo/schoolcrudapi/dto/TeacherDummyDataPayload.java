@@ -13,8 +13,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TeacherDummyDataPayload {
 
-    @JsonProperty("name")
-    private String fullName;
-    private String email;
-    private List<String> subjects;
+    @JsonProperty("users")
+    private List<TempTeacher> teachers;
+
+    @Data
+    public static class TempTeacher {
+        private String firstName;
+        private String lastName;
+        private String email;
+        private Company company;
+    }
+
+    @Data
+    public static class Company {
+        private String department;
+    }
+
 }

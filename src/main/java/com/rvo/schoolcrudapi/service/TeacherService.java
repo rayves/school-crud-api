@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rvo.schoolcrudapi.dto.TeacherDummyDataPayload;
+import com.rvo.schoolcrudapi.dto.TeacherDummyDataPayload.TempTeacher;
 import com.rvo.schoolcrudapi.model.Teacher;
 import com.rvo.schoolcrudapi.repository.ITeacherRepository;
 
@@ -39,13 +40,13 @@ public class TeacherService implements ITeacherService {
 
     @Override
     @Transactional
-    public void createTeachers(List<TeacherDummyDataPayload> teachers) {
+    public void createTeachers(TeacherDummyDataPayload teacherPayload) {
         System.out.println("Generating Teachers...");
-        for (TeacherDummyDataPayload teacher : teachers) {
-            String firstName = teacher.getFullName().split(" ")[0];
-            String lastName = teacher.getFullName().split(" ")[1];
+        for (TempTeacher teacher : teacherPayload.getTeachers()) {
+            String firstName = teacher.getFirstName();
+            String lastName = teacher.getLastName();
             String email = teacher.getEmail();
-            String subject = teacher.getSubjects().get(0);
+            String subject = teacher.getCompany().getDepartment();
             Teacher newTeacher = new Teacher(firstName, lastName, email, subject);
             teacherRepository.save(newTeacher);
         }
