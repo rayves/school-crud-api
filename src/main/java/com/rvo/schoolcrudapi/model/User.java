@@ -3,7 +3,7 @@ package com.rvo.schoolcrudapi.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -17,13 +17,14 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class User {
 
@@ -42,20 +43,19 @@ public class User {
   @Column(name = "enabled", nullable = false)
   private boolean enabled = true;
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
   @JoinTable(name = "user_authorities", // Join table to link users to authorities
       joinColumns = @JoinColumn(name = "user_id"), // Foreign key to User
       inverseJoinColumns = @JoinColumn(name = "authority_id") // Foreign key to Authority
   )
+  @JsonIgnore
   private Set<Authority> authorities = new HashSet<>();
 
-  @Autowired
   public User(String username, String password) {
     this.username = username;
     this.password = password;
   }
 
-  @Autowired
   public User(String username, String password, Set<Authority> authorities) {
     this.username = username;
     this.password = password;

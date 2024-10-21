@@ -3,7 +3,7 @@ package com.rvo.schoolcrudapi.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,13 +14,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "authorities")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Authority {
 
@@ -34,9 +35,9 @@ public class Authority {
   private String authorityName;
 
   @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
+  @JsonIgnore
   private Set<User> users = new HashSet<>();
 
-  @Autowired
   public Authority(String authorityName) {
     this.authorityName = authorityName;
   }

@@ -33,7 +33,7 @@ public class UserService implements IUserService {
   public void createUserWithAuthorities(User user, List<String> authorities) {
     Set<Authority> authoritiesSet = new HashSet<>();
     for (String authorityName : authorities) {
-      Authority authority = authorityRepository.findByAuthorityName(authorityName.toLowerCase());
+      Authority authority = authorityRepository.findByAuthorityName(authorityName);
       if (authority != null)
         authoritiesSet.add(authority);
     }

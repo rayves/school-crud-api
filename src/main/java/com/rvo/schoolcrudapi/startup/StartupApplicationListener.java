@@ -55,9 +55,9 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 
     private void createAuthorities() {
         List<Authority> authorities = new ArrayList<>(Arrays.asList(
-                new Authority(Role.ADMIN.name().toLowerCase()),
-                new Authority(Role.TEACHER.name().toLowerCase()),
-                new Authority(Role.STUDENT.name().toLowerCase())));
+                new Authority(Role.ADMIN.getRole()),
+                new Authority(Role.TEACHER.getRole()),
+                new Authority(Role.STUDENT.getRole())));
         for (Authority authority : authorities) {
             authorityService.createAuthority(authority);
         }
@@ -66,15 +66,15 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
     private void createUsers() {
         userService.createUserWithAuthorities(
                 new User("admin", "admin123"),
-                new ArrayList<>(Arrays.asList(Role.ADMIN.name(), Role.TEACHER.name(), Role.STUDENT.name())));
+                new ArrayList<>(Arrays.asList(Role.ADMIN.getRole(), Role.TEACHER.getRole(), Role.STUDENT.getRole())));
 
         userService.createUserWithAuthorities(
                 new User("teacher", "teacher123"),
-                new ArrayList<>(Arrays.asList(Role.TEACHER.name(), Role.STUDENT.name())));
+                new ArrayList<>(Arrays.asList(Role.TEACHER.getRole(), Role.STUDENT.getRole())));
 
         userService.createUserWithAuthorities(
                 new User("student", "student123"),
-                new ArrayList<>(Arrays.asList(Role.STUDENT.name())));
+                new ArrayList<>(Arrays.asList(Role.STUDENT.getRole())));
     }
 
     private void createStudents() {

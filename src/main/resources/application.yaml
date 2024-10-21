@@ -26,4 +26,7 @@ logging:
             # log values for SQL statements
         SQL: debug
         # Log SQL statements
+      springframework:
+        security: DEBUG
+        web: DEBUG
     root: warn
