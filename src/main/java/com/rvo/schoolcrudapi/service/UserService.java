@@ -1,8 +1,8 @@
 package com.rvo.schoolcrudapi.service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,16 +29,26 @@ public class UserService implements IUserService {
     System.out.println("New User created..." + user);
   }
 
+  @Override
   @Transactional
-  public void createUserWithAuthorities(User user, List<String> authorities) {
-    Set<Authority> authoritiesSet = new HashSet<>();
-    for (String authorityName : authorities) {
-      Authority authority = authorityRepository.findByAuthorityName(authorityName);
-      if (authority != null)
-        authoritiesSet.add(authority);
-    }
+  public void createUserWithAuthorities(User user, List<String> authoritiesNames) {
+    System.out.println("Creating users with Authorities..." + user);
+
+    Set<Authority> authoritiesSet = authoritiesNames.stream()
+        .map(authorityName -> {
+          Authority authority = authorityRepository.findByAuthorityName(authorityName);
+          authority.addUser(user);
+          return authority;
+        })
+        .collect(Collectors.toSet());
+
     user.setAuthorities(authoritiesSet);
-    this.createUser(user);
+
+    if (!user.getAuthorities().isEmpty()) {
+      userRepository.save(user);
+      System.out.println("New User created with authorities..." + user);
+      ;
+    }
   }
 
   @Override

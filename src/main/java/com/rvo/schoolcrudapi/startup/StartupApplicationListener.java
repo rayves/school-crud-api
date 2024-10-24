@@ -65,15 +65,17 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 
     private void createUsers() {
         userService.createUserWithAuthorities(
-                new User("admin", "admin123"),
-                new ArrayList<>(Arrays.asList(Role.ADMIN.getRole(), Role.TEACHER.getRole(), Role.STUDENT.getRole())));
+                new User("admin", "{noop}admin123"),
+                new ArrayList<>(Arrays.asList(Role.ADMIN.getRole(), Role.TEACHER.getRole(),
+                        Role.STUDENT.getRole())));
 
         userService.createUserWithAuthorities(
-                new User("teacher", "teacher123"),
-                new ArrayList<>(Arrays.asList(Role.TEACHER.getRole(), Role.STUDENT.getRole())));
+                new User("teacher", "{noop}teacher123"),
+                new ArrayList<>(Arrays.asList(Role.TEACHER.getRole(),
+                        Role.STUDENT.getRole())));
 
         userService.createUserWithAuthorities(
-                new User("student", "student123"),
+                new User("student", "{noop}student123"),
                 new ArrayList<>(Arrays.asList(Role.STUDENT.getRole())));
     }
 

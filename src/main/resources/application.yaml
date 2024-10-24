@@ -19,14 +19,15 @@ spring:
 logging:
   level:
     org:
-      hibernate:
-        orm:
-          jdbc:
-            bind: trace
-            # log values for SQL statements
-        SQL: debug
-        # Log SQL statements
+      # hibernate:
+      #   orm:
+      #     jdbc:
+      #       bind: trace
+      #       # log values for SQL statements
+      #   SQL: debug
+      #   # Log SQL statements
       springframework:
         security: DEBUG
         web: DEBUG
+        aop: DEBUG
     root: warn
