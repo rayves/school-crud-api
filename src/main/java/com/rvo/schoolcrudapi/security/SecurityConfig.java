@@ -13,18 +13,17 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.rvo.schoolcrudapi.constants.ApiEndpoints;
 import com.rvo.schoolcrudapi.enums.Role;
-import com.rvo.schoolcrudapi.service.CustomUserDetailsService;
-
-import lombok.AllArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 public class SecurityConfig {
 
-    // inject CustomUserDetailsService (an implementation of UserDetailsService) via
-    // constructor for use as a Bean
-    private final CustomUserDetailsService customUserDetailsService;
+    /*
+     * injects CustomUserDetailsService (an implementation of UserDetailsService)
+     * via constructor for use as a Bean. Not needed as CustomUserDetailsService is
+     * annotated as a @Service component so is already injected as a @Bean
+     */
+    // private final CustomUserDetailsService customUserDetailsService;
 
     // @Bean
     // public BCryptPasswordEncoder passwordEncoder() {
