@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.rvo.schoolcrudapi.constants.ApiEndpoints;
@@ -21,14 +22,14 @@ public class SecurityConfig {
     /*
      * injects CustomUserDetailsService (an implementation of UserDetailsService)
      * via constructor for use as a Bean. Not needed as CustomUserDetailsService is
-     * annotated as a @Service component so is already injected as a @Bean
+     * annotated as a @Service component ready for dependency injection
      */
     // private final CustomUserDetailsService customUserDetailsService;
 
-    // @Bean
-    // public BCryptPasswordEncoder passwordEncoder() {
-    // return new BCryptPasswordEncoder();
-    // }
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public SecurityFilterChain securityfilterChain(HttpSecurity http) throws Exception {

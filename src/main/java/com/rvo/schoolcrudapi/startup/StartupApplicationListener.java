@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -28,15 +29,17 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
     private final ITeacherService teacherService;
     private final IAuthorityService authorityService;
     private final IUserService userService;
+    private final BCryptPasswordEncoder passwordEncoder;
     private boolean hasRun = false;
 
     @Autowired
     public StartupApplicationListener(IStudentService studentService, ITeacherService teacherService,
-            IAuthorityService authorityService, IUserService userService) {
+            IAuthorityService authorityService, IUserService userService, BCryptPasswordEncoder passwordEncoder) {
         this.studentService = studentService;
         this.teacherService = teacherService;
         this.authorityService = authorityService;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -65,17 +68,17 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 
     private void createUsers() {
         userService.createUserWithAuthorities(
-                new User("admin", "{noop}admin123"),
+                new User("admin", passwordEncoder.encode("admin123")),
                 new ArrayList<>(Arrays.asList(Role.ADMIN.getRole(), Role.TEACHER.getRole(),
                         Role.STUDENT.getRole())));
 
         userService.createUserWithAuthorities(
-                new User("teacher", "{noop}teacher123"),
+                new User("teacher", passwordEncoder.encode("teacher123")),
                 new ArrayList<>(Arrays.asList(Role.TEACHER.getRole(),
                         Role.STUDENT.getRole())));
 
         userService.createUserWithAuthorities(
-                new User("student", "{noop}student123"),
+                new User("student", passwordEncoder.encode("student123")),
                 new ArrayList<>(Arrays.asList(Role.STUDENT.getRole())));
     }
 
