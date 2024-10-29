@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 // generates CustomUserDetails (Spring Security credentials) for the user found
 // in the database
 
+
 @Service
 @AllArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {

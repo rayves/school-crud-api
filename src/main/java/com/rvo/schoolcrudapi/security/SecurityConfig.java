@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.rvo.schoolcrudapi.constants.ApiEndpoints;
 import com.rvo.schoolcrudapi.enums.Role;
+import com.rvo.schoolcrudapi.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -56,6 +57,20 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Will automatically scan for authentication related beans eg.
+     * {@link CustomUserDetailsService} and use for retrieving user details during
+     * authentication.
+     * <p>
+     * AuthenticationConfiguration scans for any defined AuthenticationProvider
+     * beans and registers them with the AuthenticationManager.
+     * <p>
+     * If there’s a UserDetailsService but no AuthenticationProvider, Spring will
+     * automatically create a DaoAuthenticationProvider that uses the
+     * UserDetailsService. If multiple AuthenticationProviders are defined, the
+     * AuthenticationManager will try them in order until one successfully
+     * authenticates the user or all fail.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
