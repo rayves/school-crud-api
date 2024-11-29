@@ -2,11 +2,15 @@ spring:
   main:
     banner-mode: off
   application:
-    name: cruddemo
+    name: school_crud_api
   datasource:
     url: jdbc:mysql://localhost:3306/student_tracker
     username: springstudent
     password: springstudent
+  security:
+    user:
+      name: user
+      password: user
   jpa:
     hibernate:
       ddl-auto: create
@@ -15,11 +19,15 @@ spring:
 logging:
   level:
     org:
-      hibernate:
-        orm:
-          jdbc:
-            bind: trace
-            # log values for SQL statements
-        SQL: debug
-        # Log SQL statements
+      # hibernate:
+      #   orm:
+      #     jdbc:
+      #       bind: trace
+      #       # log values for SQL statements
+      #   SQL: debug
+      #   # Log SQL statements
+      springframework:
+        security: DEBUG
+        web: DEBUG
+        aop: DEBUG
     root: warn

@@ -1,0 +1,10 @@
+POST http://localhost:8080/students
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic admin:admin123
+
+{
+    "firstName": "TEst",
+    "lastName": "testy",
+    "email": "test@luv2code.com"
+}
