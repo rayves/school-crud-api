@@ -1,6 +1,7 @@
-POST http://localhost:8080/students
+PUT http://localhost:8080/students/10
 Accept: application/json
 Content-Type: application/json
+Authorization: Basic admin:admin123
 
 {
     "firstName": "TEst",

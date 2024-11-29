@@ -1,0 +1,10 @@
+PUT http://localhost:8080/students/10
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic teacher:teacher123
+
+{
+    "firstName": "TEst",
+    "lastName": "testy",
+    "email": "test@luv2code.com"
+}

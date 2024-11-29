@@ -1,0 +1,3 @@
+GET http://localhost:8080/students
+Accept: application/json
+Authorization: Basic teacher:teacher123
